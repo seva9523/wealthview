@@ -1,0 +1,83 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WealthView.pro API",
+    "version": "2.0.0",
+    "description": "Read-only Stellar treasury intelligence infrastructure for builders and AI agents. No signing, custody, trading, authentication, or database required."
+  },
+  "paths": {
+    "/api/aggregate": {
+      "get": {
+        "summary": "Aggregate Stellar wallets",
+        "parameters": [
+          {
+            "name": "wallets",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma or line separated Stellar G... public keys."
+          },
+          {
+            "name": "contracts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional comma or line separated SEP-41/Soroban C... contract IDs."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Live aggregate result"
+          },
+          "400": {
+            "description": "Validation or aggregation error with per-wallet details"
+          }
+        }
+      }
+    },
+    "/api/signals": {
+      "get": {
+        "summary": "Return rule-based treasury signals from live aggregate results",
+        "parameters": [
+          {
+            "name": "wallets",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule-based signals"
+          }
+        }
+      }
+    },
+    "/api/intelligence": {
+      "get": {
+        "summary": "Return treasury health, idle capital, alerts, benchmarks, change detection availability, executive brief, and simulation defaults",
+        "parameters": [
+          {
+            "name": "wallets",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Treasury intelligence result"
+          }
+        }
+      }
+    }
+  }
+}

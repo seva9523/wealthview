@@ -1,0 +1,22 @@
+{
+  "name": "wealthview-pro",
+  "version": "2.0.0",
+  "description": "WealthView.pro read-only Stellar treasury intelligence platform.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "check": "npm run build && node --check app/api/aggregate/route.js && node --check app/api/signals/route.js && node --check app/api/intelligence/route.js && node --check api/aggregate.js && node --check api/signals.js && node --check api/intelligence.js && node --check lib/stellar.js && node --check lib/intelligence.js && node --check mcp-server.js && node --check public/wealthview-static.js && test -f public/index.html && test -f public/styles.css",
+    "bundle": "zip -r wealthview-deploy-bundle.zip app api lib public package.json next.config.mjs vercel.json README.md DEPLOY_NOW.md .gitignore mcp-server.js mcp.json agent.json CNAME favicon.ico -x '.git/*' 'node_modules/*' '.next/*' 'dist/*' '.env*' '.vercel/*'"
+  },
+  "engines": {
+    "node": ">=18.18"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
