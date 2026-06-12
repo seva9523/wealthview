@@ -1,0 +1,16 @@
+{
+  "name": "WealthView Treasury Agent",
+  "description": "Agent metadata for discovering WealthView treasury intelligence endpoints.",
+  "version": "1.0.0",
+  "homepage_url": "https://wealthview.app",
+  "api": {
+    "type": "openapi",
+    "url": "/public/openapi.json"
+  },
+  "capabilities": [
+    "portfolio_snapshot",
+    "treasury_history",
+    "risk_intelligence",
+    "treasury_signals"
+  ]
+}
