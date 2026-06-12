@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WealthView Demo</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <style>
+      body { margin: 0; min-height: 100vh; background: #08111f; color: #e5f2ff; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      main { max-width: 960px; margin: 0 auto; padding: 48px 22px; }
+      a { color: #67e8f9; }
+      pre { overflow: auto; background: #020617; border: 1px solid #1e385b; border-radius: 18px; padding: 20px; line-height: 1.55; }
+      button { border: 0; border-radius: 999px; background: #67e8f9; color: #07111f; padding: 12px 18px; font-weight: 800; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a href="/">← Back to dashboard</a>
+      <h1>WealthView API Demo</h1>
+      <p>This page loads the aggregate endpoint through <code>stellar-portfolio-sdk.js</code>.</p>
+      <button id="refresh">Refresh aggregate data</button>
+      <pre id="output">Loading…</pre>
+    </main>
+    <script type="module">
+      import { createWealthViewClient } from './stellar-portfolio-sdk.js';
+      const output = document.querySelector('#output');
+      const client = createWealthViewClient();
+      async function load() {
+        output.textContent = 'Loading…';
+        try {
+          output.textContent = JSON.stringify(await client.aggregate(), null, 2);
+        } catch (error) {
+          output.textContent = `Unable to load API data in this environment. Deploy to Vercel for serverless API support.\n\n${error.message}`;
+        }
+      }
+      document.querySelector('#refresh').addEventListener('click', load);
+      load();
+    </script>
+  </body>
+</html>

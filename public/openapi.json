@@ -1,0 +1,15 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WealthView API",
+    "version": "1.0.0",
+    "description": "Treasury snapshot, history, intelligence, and signal endpoints for WealthView."
+  },
+  "paths": {
+    "/api/snapshot": { "get": { "summary": "Get the latest treasury snapshot", "responses": { "200": { "description": "Snapshot response" } } } },
+    "/api/history": { "get": { "summary": "Get treasury history", "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer", "default": 30 } }], "responses": { "200": { "description": "History response" } } } },
+    "/api/signals": { "get": { "summary": "Get treasury signals", "responses": { "200": { "description": "Signals response" } } } },
+    "/api/intelligence": { "get": { "summary": "Get intelligence summary", "responses": { "200": { "description": "Intelligence response" } } } },
+    "/api/aggregate": { "get": { "summary": "Get all dashboard data", "responses": { "200": { "description": "Aggregate response" } } } }
+  }
+}
