@@ -1,0 +1,12 @@
+{
+  "name": "WealthView.pro",
+  "description": "Read-only Stellar treasury intelligence for wallets, classic assets, SEP-41/Soroban contract checks, builders, DAOs, startups, and AI agents.",
+  "url": "https://wealthview.pro",
+  "read_only": true,
+  "authentication": "none",
+  "endpoints": {
+    "aggregate": "/api/aggregate?wallets=G...",
+    "signals": "/api/signals?wallets=G...",
+    "intelligence": "/api/intelligence?wallets=G..."
+  }
+}

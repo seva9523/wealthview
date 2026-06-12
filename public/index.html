@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WealthView.pro — Stellar Treasury Intelligence</title>
+    <meta name="description" content="Read-only Stellar treasury intelligence for wallets, Stellar assets, SEP-41/Soroban tokens, builders, DAOs, startups, and AI agents." />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Read-only Stellar treasury intelligence</p>
+        <h1>WealthView.pro for Stellar builders, startups, DAOs, and AI agents.</h1>
+        <p>Enter public Stellar wallets to aggregate XLM, classic trustline assets, optional SEP-41/Soroban contract checks, pricing coverage, alerts, snapshots, simulations, and board-ready intelligence. No wallet connection, signing, transactions, custody, login, or database.</p>
+        <div class="badges"><span>Horizon-backed</span><span>Read-only</span><span>Agent-ready APIs</span></div>
+      </section>
+
+      <section class="grid two">
+        <div class="card">
+          <h2>Wallet Input</h2>
+          <label for="wallets">Stellar public wallets</label>
+          <textarea id="wallets" rows="6" placeholder="G...&#10;G... or comma-separated"></textarea>
+          <label for="contracts">Optional SEP-41 / Soroban contract IDs</label>
+          <textarea id="contracts" rows="3" placeholder="C... optional, comma-separated or line-separated"></textarea>
+          <div class="actions">
+            <button id="run">Run Read-Only Aggregation</button>
+            <button id="share" class="secondary">Generate Share Link</button>
+          </div>
+          <div id="input-errors"></div>
+        </div>
+        <div class="card">
+          <h2>Developer API</h2>
+          <div class="api-row"><code>/api/aggregate?wallets=G...</code><button class="copy" data-copy="/api/aggregate?wallets=G...">Copy</button></div>
+          <div class="api-row"><code>/api/signals?wallets=G...</code><button class="copy" data-copy="/api/signals?wallets=G...">Copy</button></div>
+          <div class="api-row"><code>/api/intelligence?wallets=G...</code><button class="copy" data-copy="/api/intelligence?wallets=G...">Copy</button></div>
+          <p class="muted">Agent files: <code>/agent.json</code>, <code>/openapi.json</code>, and <code>/mcp.json</code>.</p>
+        </div>
+      </section>
+
+      <section id="overview" class="grid four hidden"></section>
+      <section id="details" class="grid two hidden"></section>
+      <section id="intelligence" class="card hidden"></section>
+    </main>
+    <script src="/wealthview-static.js" defer></script>
+  </body>
+</html>
