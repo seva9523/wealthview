@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "wealthview": {
+      "command": "node",
+      "args": ["mcp-server.js"]
+    }
+  }
+}
