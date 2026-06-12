@@ -1,10 +1,17 @@
-import { aggregateWallets } from '../lib/stellar.js';
-import { handleOptions, readQueryValue, sendJson } from './_treasurySignals.js';
+import { getHistory, latestSnapshot } from '../lib/history.js';
+import { intelligenceSummary, signalSet } from '../lib/intelligence.js';
+import { sep41Assets } from '../lib/sep41.js';
+import { handleOptions, sendJson } from './_treasurySignals.js';
 
-export default async function handler(request, response) {
+export default function handler(request, response) {
   if (handleOptions(request, response)) return;
-  const wallets = readQueryValue(request, 'wallets', readQueryValue(request, 'wallet', ''));
-  const contracts = readQueryValue(request, 'contracts', readQueryValue(request, 'sep41', ''));
-  const aggregate = await aggregateWallets(wallets, { contracts });
-  sendJson(response, aggregate, aggregate.success ? 200 : 400);
+  sendJson(response, {
+    data: {
+      snapshot: latestSnapshot(),
+      history: getHistory(7),
+      intelligence: intelligenceSummary(),
+      signals: signalSet(),
+      assets: sep41Assets
+    }
+  });
 }

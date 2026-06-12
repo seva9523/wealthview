@@ -1,6 +1,6 @@
 {
   "name": "wealthview-pro",
-  "description": "Read-only Stellar treasury intelligence infrastructure for builders and AI agents.",
+  "description": "Read-only Stellar treasury intelligence MCP manifest.",
   "server": "mcp-server.js",
   "tools": ["aggregate", "signals", "intelligence"]
 }

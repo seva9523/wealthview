@@ -1,11 +1,24 @@
-# Deploy WealthView.pro
+# Deploy WealthView Now
 
-1. Merge the PR into the Vercel-connected branch.
-2. In Vercel, set the project framework to **Next.js**.
-3. Use `npm install` as the install command and `npm run build` as the build command.
-4. Leave Output Directory unset so Vercel uses the Next.js default.
-5. Redeploy from Vercel.
+Use this checklist to deploy WealthView from the repository.
 
-If the existing Vercel project still has an old Output Directory override such as `public`, this PR also includes a complete static fallback at `public/index.html` so the root URL still renders the wallet-first WealthView experience instead of a 404. The preferred production mode remains the Next.js app.
+## GitHub Pages
 
-The app is read-only. It requires no wallet connection, signing, authentication, custody, trading, or database. All dashboard values are derived from live wallet input and aggregation results.
+1. Merge the deployment PR into `main`.
+2. Open repository **Settings → Pages**.
+3. Set **Source** to **GitHub Actions**.
+4. Run **Actions → Deploy WealthView Pages → Run workflow**.
+5. Confirm the published URL shown by the workflow.
+
+> Note: `CNAME` is set to `wealthview.app`. Update it before deployment if your production domain is different.
+
+## Vercel
+
+1. Import the repository into Vercel.
+2. Use the default framework preset (`Other`).
+3. Leave build command and output directory empty for static hosting.
+4. Deploy. Vercel automatically exposes the functions in `api/`.
+
+## Required deployment files
+
+This bundle contains the required static files, API routes, shared libraries, MCP metadata, and deployment configuration needed to publish WealthView.
