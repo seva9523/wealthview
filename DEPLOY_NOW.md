@@ -1,23 +1,24 @@
 # Deploy WealthView Now
 
-This branch restores the live Stellar wallet experience and adds Treasury Intelligence as an additive section. It does not use static demo treasury metrics.
-
-## Vercel
-
-1. Merge the PR.
-2. In Vercel, redeploy the merged commit.
-3. Confirm build command is `npm run build` and output directory is `public`.
-4. Open the deployment URL, paste one or more Stellar `G...` wallets, and click **Refresh aggregate**.
+Use this checklist to deploy WealthView from the repository.
 
 ## GitHub Pages
 
-1. Merge the PR.
-2. Use **Settings → Pages → GitHub Actions**.
-3. Run the **Deploy WealthView Pages** workflow.
+1. Merge the deployment PR into `main`.
+2. Open repository **Settings → Pages**.
+3. Set **Source** to **GitHub Actions**.
+4. Run **Actions → Deploy WealthView Pages → Run workflow**.
+5. Confirm the published URL shown by the workflow.
 
-## Live API routes
+> Note: `CNAME` is set to `wealthview.app`. Update it before deployment if your production domain is different.
 
-- `/api/aggregate?wallets=G...` — live wallet aggregate with signals and intelligence.
-- `/api/signals?wallets=G...` — Treasury Signals from the aggregate.
-- `/api/intelligence?wallets=G...` — Treasury Intelligence from the aggregate.
-- `/agent.json`, `/openapi.json`, `/mcp.json`, and `mcp-server.js` remain available for integrations.
+## Vercel
+
+1. Import the repository into Vercel.
+2. Use the default framework preset (`Other`).
+3. Leave build command and output directory empty for static hosting.
+4. Deploy. Vercel automatically exposes the functions in `api/`.
+
+## Required deployment files
+
+This bundle contains the required static files, API routes, shared libraries, MCP metadata, and deployment configuration needed to publish WealthView.

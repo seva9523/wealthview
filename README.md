@@ -1,30 +1,22 @@
 # WealthView
 
-WealthView is a Stellar-native treasury dashboard that keeps the original wallet-first workflow intact: paste one or more Stellar wallets, query live balances through `/api/aggregate`, review XLM and classic trustline holdings, optionally include SEP-41/Soroban token holdings from an indexer, then generate share links, snapshots, exports, Treasury Signals, and additive Treasury Intelligence.
+WealthView is a lightweight deployment bundle for a Stellar-oriented treasury and portfolio dashboard. It includes a static dashboard, demo page, Vercel-compatible API routes, MCP metadata, and GitHub Pages deployment workflow.
 
-## Features
+## What is included
 
-- Multiple Stellar wallet aggregation from live Horizon account data.
-- XLM balance and reserve-aware idle-capital calculations.
-- Stellar classic asset/trustline detection and stable asset pricing rules.
-- Optional SEP-41/Soroban token holdings via `CODE:CONTRACT_ID:BALANCE:PRICE_USD` input.
-- Current XLM pricing from CoinGecko with graceful fallback when pricing is unavailable.
-- Treasury Signals UI, shareable URL state, JSON export, and downloadable treasury snapshots.
-- Additive Treasury Intelligence modules: Health Score, Idle Capital Detection, Alerts, Rule-based Benchmarking, Snapshot Change Detection, Simulation, and Executive Brief.
+- `index.html` — production landing dashboard.
+- `demo.html` — interactive SDK/API demo.
+- `stellar-portfolio-sdk.js` — browser-friendly SDK wrapper.
+- `api/` — Vercel serverless endpoints for snapshots, history, signals, and intelligence.
+- `lib/` — shared data and scoring helpers.
+- `public/openapi.json` and `public/agent.json` — agent/API discovery metadata.
+- `.github/workflows/deploy-pages.yml` — GitHub Pages deployment workflow.
 
 ## Local checks
 
 ```bash
 npm run check
 ```
-
-## Static build
-
-```bash
-npm run build
-```
-
-The build command writes the static website to both `public/` and `dist/`. Vercel serves `public/`; GitHub Pages deploys `dist/`.
 
 ## Deploy
 
@@ -37,6 +29,7 @@ The build command writes the static website to both `public/` and `dist/`. Verce
 ### Vercel
 
 1. Import the repository into Vercel.
-2. Use the default framework preset (`Other`).
-3. Confirm Vercel uses `npm run build` and output directory `public`.
-4. Deploy. Vercel exposes the serverless routes in `api/`.
+2. Keep the default static output settings.
+3. Vercel will serve the API files in `api/` as serverless functions.
+
+See `DEPLOY_NOW.md` for a quick deployment checklist.

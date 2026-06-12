@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
@@ -22,12 +20,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/index", "destination": "/index.html" },
-    { "source": "/demo", "destination": "/demo.html" },
-    { "source": "/openapi.json", "destination": "/openapi.json" },
-    { "source": "/agent.json", "destination": "/agent.json" },
-    { "source": "/public/openapi.json", "destination": "/openapi.json" },
-    { "source": "/public/agent.json", "destination": "/agent.json" }
+    { "source": "/openapi.json", "destination": "/public/openapi.json" },
+    { "source": "/agent.json", "destination": "/public/agent.json" }
   ]
 }

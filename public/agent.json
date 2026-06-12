@@ -1,18 +1,16 @@
 {
   "name": "WealthView Treasury Agent",
-  "description": "Agent metadata for live Stellar wallet aggregation, Treasury Signals, and Treasury Intelligence endpoints.",
+  "description": "Agent metadata for discovering WealthView treasury intelligence endpoints.",
   "version": "1.0.0",
   "homepage_url": "https://wealthview.app",
   "api": {
     "type": "openapi",
-    "url": "/openapi.json"
+    "url": "/public/openapi.json"
   },
   "capabilities": [
-    "multiple_stellar_wallet_aggregation",
-    "xlm_balance_support",
-    "stellar_classic_trustlines",
-    "sep41_soroban_holdings",
-    "treasury_signals",
-    "treasury_intelligence"
+    "portfolio_snapshot",
+    "treasury_history",
+    "risk_intelligence",
+    "treasury_signals"
   ]
 }

@@ -3,23 +3,34 @@ export class WealthViewClient {
     this.baseUrl = baseUrl.replace(/\/$/, '');
   }
 
-  async request(path, params = {}) {
-    const search = params instanceof URLSearchParams ? params : new URLSearchParams(params);
-    const query = search.toString();
-    const response = await fetch(`${this.baseUrl}${path}${query ? `?${query}` : ''}`);
+  async request(path) {
+    const response = await fetch(`${this.baseUrl}${path}`);
     if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      throw new Error(body.error || `WealthView request failed: ${response.status}`);
+      throw new Error(`WealthView request failed: ${response.status}`);
     }
     const body = await response.json();
     return body.data ?? body;
   }
 
-  snapshot(params = {}) { return this.request('/api/snapshot', params); }
-  history(params = {}) { return this.request('/api/history', params); }
-  signals(params = {}) { return this.request('/api/signals', params); }
-  intelligence(params = {}) { return this.request('/api/intelligence', params); }
-  aggregate(params = {}) { return this.request('/api/aggregate', params); }
+  snapshot() {
+    return this.request('/api/snapshot');
+  }
+
+  history(limit = 30) {
+    return this.request(`/api/history?limit=${encodeURIComponent(limit)}`);
+  }
+
+  signals() {
+    return this.request('/api/signals');
+  }
+
+  intelligence() {
+    return this.request('/api/intelligence');
+  }
+
+  aggregate() {
+    return this.request('/api/aggregate');
+  }
 }
 
 export function createWealthViewClient(options) {
