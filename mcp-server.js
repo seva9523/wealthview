@@ -1,21 +1,43 @@
-#!/usr/bin/env node
-import { aggregateWallets } from './lib/stellar.js';
-import { buildIntelligence, buildSignals } from './lib/intelligence.js';
+import { createInterface } from 'node:readline';
+import { latestSnapshot, getHistory } from './lib/history.js';
+import { intelligenceSummary, signalSet } from './lib/intelligence.js';
 
-async function main() {
-  const [tool = 'help', wallets = '', contracts = ''] = process.argv.slice(2);
-  if (tool === 'help' || !wallets) {
-    console.log(JSON.stringify({ name: 'wealthview-pro', usage: 'node mcp-server.js <aggregate|signals|intelligence> <wallets> [contracts]', readOnly: true }, null, 2));
-    return;
-  }
-  const aggregate = await aggregateWallets(wallets, { contracts });
-  if (tool === 'aggregate') console.log(JSON.stringify(aggregate, null, 2));
-  else if (tool === 'signals') console.log(JSON.stringify({ success: aggregate.success, signals: buildSignals(aggregate) }, null, 2));
-  else if (tool === 'intelligence') console.log(JSON.stringify(buildIntelligence(aggregate), null, 2));
-  else console.log(JSON.stringify({ error: `Unknown tool: ${tool}` }, null, 2));
+const tools = [
+  { name: 'wealthview_snapshot', description: 'Return the latest WealthView treasury snapshot.' },
+  { name: 'wealthview_history', description: 'Return recent WealthView treasury history.' },
+  { name: 'wealthview_intelligence', description: 'Return WealthView risk intelligence.' },
+  { name: 'wealthview_signals', description: 'Return WealthView treasury monitoring signals.' }
+];
+
+function resultFor(name) {
+  if (name === 'wealthview_snapshot') return latestSnapshot();
+  if (name === 'wealthview_history') return getHistory(7);
+  if (name === 'wealthview_intelligence') return intelligenceSummary();
+  if (name === 'wealthview_signals') return signalSet();
+  throw new Error(`Unknown tool: ${name}`);
 }
 
-main().catch((error) => {
-  console.error(JSON.stringify({ success: false, error: error.message }, null, 2));
-  process.exitCode = 1;
+function send(message) {
+  process.stdout.write(`${JSON.stringify(message)}\n`);
+}
+
+const rl = createInterface({ input: process.stdin, crlfDelay: Infinity });
+rl.on('line', (line) => {
+  if (!line.trim()) return;
+  const request = JSON.parse(line);
+  const { id, method, params = {} } = request;
+  try {
+    if (method === 'initialize') {
+      send({ jsonrpc: '2.0', id, result: { protocolVersion: '2024-11-05', capabilities: { tools: {} }, serverInfo: { name: 'wealthview', version: '1.0.0' } } });
+    } else if (method === 'tools/list') {
+      send({ jsonrpc: '2.0', id, result: { tools } });
+    } else if (method === 'tools/call') {
+      const data = resultFor(params.name);
+      send({ jsonrpc: '2.0', id, result: { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] } });
+    } else {
+      send({ jsonrpc: '2.0', id, error: { code: -32601, message: `Method not found: ${method}` } });
+    }
+  } catch (error) {
+    send({ jsonrpc: '2.0', id, error: { code: -32000, message: error.message } });
+  }
 });
