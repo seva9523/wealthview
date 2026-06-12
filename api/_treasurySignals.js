@@ -1,7 +1,8 @@
+import { signalSet } from '../lib/intelligence.js';
+
 export function sendJson(response, payload, status = 200) {
-  response.setHeader('Access-Control-Allow-Origin', '*');
   response.setHeader('Content-Type', 'application/json; charset=utf-8');
-  response.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=120');
+  response.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
   response.status(status).json(payload);
 }
 
@@ -16,8 +17,6 @@ export function handleOptions(request, response) {
   return false;
 }
 
-export function readQueryValue(request, key, fallback = '') {
-  const value = request.query?.[key];
-  if (Array.isArray(value)) return value.join(',');
-  return value ?? fallback;
+export function treasurySignals() {
+  return signalSet();
 }
