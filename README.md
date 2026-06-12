@@ -18,26 +18,18 @@ WealthView is a lightweight deployment bundle for a Stellar-oriented treasury an
 npm run check
 ```
 
-## Static build
-
-```bash
-npm run build
-```
-
-The build command writes the static website to both `public/` and `dist/`. Vercel is configured to serve `public/index.html`, which prevents root URL 404s on deployments such as `https://wealthview-khaki.vercel.app/`, while GitHub Pages deploys `dist/`.
-
 ## Deploy
 
 ### GitHub Pages
 
 1. Merge this branch into `main`.
 2. In GitHub, go to **Settings → Pages** and select **GitHub Actions** as the source.
-3. Run the **Deploy WealthView Pages** workflow or push to `main`. The workflow builds the static site and uploads `dist/`.
+3. Run the **Deploy WealthView Pages** workflow or push to `main`.
 
 ### Vercel
 
 1. Import the repository into Vercel.
-2. Vercel reads `vercel.json`, runs `npm run build`, and serves the `public/` output directory.
+2. Keep the default static output settings.
 3. Vercel will serve the API files in `api/` as serverless functions.
 
 See `DEPLOY_NOW.md` for a quick deployment checklist.

@@ -16,9 +16,8 @@ Use this checklist to deploy WealthView from the repository.
 
 1. Import the repository into Vercel.
 2. Use the default framework preset (`Other`).
-3. Confirm Vercel uses the repository `vercel.json` settings: build command `npm run build` and output directory `public`.
+3. Leave build command and output directory empty for static hosting.
 4. Deploy. Vercel automatically exposes the functions in `api/`.
-5. If the production URL previously showed `404 NOT_FOUND`, trigger a redeploy after merging this PR so Vercel rebuilds `public/index.html`.
 
 ## Required deployment files
 

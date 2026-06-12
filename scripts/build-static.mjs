@@ -8,19 +8,10 @@ const staticFiles = [
   'stellar-portfolio-sdk.js'
 ];
 
-const metadataFiles = [
-  'agent.json',
-  'openapi.json'
-];
-
-await mkdir('public', { recursive: true });
-await Promise.all(staticFiles.map((file) => cp(file, `public/${file}`)));
-
 await rm('dist', { recursive: true, force: true });
-await mkdir('dist/public', { recursive: true });
+await mkdir('dist', { recursive: true });
 
 await Promise.all(staticFiles.map((file) => cp(file, `dist/${file}`)));
-await Promise.all(metadataFiles.map((file) => cp(`public/${file}`, `dist/${file}`)));
-await Promise.all(metadataFiles.map((file) => cp(`public/${file}`, `dist/public/${file}`)));
+await cp('public', 'dist/public', { recursive: true });
 
-console.log(`Built ${staticFiles.length} static files into public/ and dist/`);
+console.log(`Built ${staticFiles.length} static files and public metadata into dist/`);

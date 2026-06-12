@@ -6,10 +6,9 @@
   "private": true,
   "scripts": {
     "dev": "vercel dev",
-    "build": "node scripts/build-static.mjs",
     "start": "node mcp-server.js",
-    "check": "npm run build && node --check api/aggregate.js && node --check api/history.js && node --check api/intelligence.js && node --check api/signals.js && node --check api/snapshot.js && node --check api/_treasurySignals.js && node --check lib/history.js && node --check lib/intelligence.js && node --check lib/sep41.js && node --check mcp-server.js && node --check stellar-portfolio-sdk.js && test -f public/index.html && test -f public/demo.html && test -f dist/index.html && test -f dist/demo.html",
-    "bundle": "zip -r wealthview-deploy-bundle.zip index.html demo.html favicon.ico CNAME DEPLOY_NOW.md README.md .gitignore .github package.json vercel.json stellar-portfolio-sdk.js api lib mcp-server.js mcp.json public scripts -x '.git/*' 'node_modules/*' 'dist/*' '.env*' '.vercel/*'"
+    "check": "node --check api/aggregate.js && node --check api/history.js && node --check api/intelligence.js && node --check api/signals.js && node --check api/snapshot.js && node --check api/_treasurySignals.js && node --check lib/history.js && node --check lib/intelligence.js && node --check lib/sep41.js && node --check mcp-server.js && node --check stellar-portfolio-sdk.js",
+    "bundle": "zip -r wealthview-deploy-bundle.zip index.html demo.html favicon.ico CNAME DEPLOY_NOW.md README.md .gitignore .github package.json vercel.json stellar-portfolio-sdk.js api lib mcp-server.js mcp.json public -x '.git/*' 'node_modules/*' 'dist/*' '.env*' '.vercel/*'"
   },
   "engines": {
     "node": ">=18"
