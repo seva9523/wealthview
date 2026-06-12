@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="WealthView aggregates live Stellar wallets and adds real treasury intelligence." />
+    <title>WealthView | Stellar Treasury View</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <style>
+      :root { color-scheme: dark; --bg:#030712; --panel:#081323; --panel2:#0d1b2f; --line:#1e3a5f; --text:#edf7ff; --muted:#9fb7d4; --cyan:#67e8f9; --blue:#5b8cff; --green:#4ade80; --amber:#fbbf24; --red:#fb7185; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      * { box-sizing: border-box; }
+      body { margin:0; min-height:100vh; background: radial-gradient(circle at 12% 0%, rgba(29,78,216,.38), transparent 28rem), radial-gradient(circle at 88% 6%, rgba(8,145,178,.28), transparent 24rem), var(--bg); color:var(--text); }
+      main { width:min(1180px, calc(100% - 32px)); margin:0 auto; padding:34px 0 56px; }
+      header { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-bottom:28px; }
+      .brand { display:flex; gap:12px; align-items:center; font-weight:900; letter-spacing:.04em; }
+      .mark { width:38px; height:38px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(135deg, var(--cyan), var(--blue)); color:#020617; box-shadow:0 0 32px rgba(103,232,249,.35); }
+      a { color:var(--cyan); }
+      .hero { display:grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap:24px; align-items:stretch; }
+      .panel { background:linear-gradient(180deg, rgba(13,27,47,.94), rgba(8,19,35,.88)); border:1px solid rgba(103,232,249,.16); border-radius:26px; padding:24px; box-shadow:0 24px 80px rgba(0,0,0,.32); }
+      h1 { font-size:clamp(2.3rem, 6vw, 4.7rem); line-height:.96; margin:10px 0 18px; letter-spacing:-.06em; }
+      h2 { margin:0 0 14px; font-size:1.05rem; text-transform:uppercase; letter-spacing:.11em; color:#bfefff; }
+      p { color:var(--muted); line-height:1.65; }
+      .eyebrow { color:var(--cyan); font-weight:900; text-transform:uppercase; letter-spacing:.16em; font-size:.78rem; }
+      textarea, input { width:100%; border:1px solid var(--line); border-radius:18px; background:#030a16; color:var(--text); padding:14px 16px; font:inherit; outline:none; }
+      textarea:focus, input:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(103,232,249,.12); }
+      textarea { min-height:118px; resize:vertical; }
+      label { display:block; color:#d8ebff; font-size:.9rem; font-weight:800; margin:14px 0 8px; }
+      .hint { font-size:.84rem; color:#7f9ab8; margin-top:8px; }
+      .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+      button, .button { border:0; border-radius:999px; padding:12px 16px; font-weight:900; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+      .primary { background:linear-gradient(135deg, var(--cyan), #93c5fd); color:#04101f; }
+      .secondary { background:rgba(148,163,184,.12); color:var(--text); border:1px solid var(--line); }
+      .danger { background:rgba(251,113,133,.12); color:#fecdd3; border:1px solid rgba(251,113,133,.35); }
+      .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:18px; margin-top:18px; }
+      .span-3 { grid-column:span 3; } .span-4 { grid-column:span 4; } .span-6 { grid-column:span 6; } .span-8 { grid-column:span 8; } .span-12 { grid-column:span 12; }
+      .metric { border:1px solid rgba(148,163,184,.16); border-radius:22px; padding:18px; background:rgba(2,8,23,.42); min-height:126px; }
+      .metric span { color:var(--muted); font-size:.88rem; }
+      .metric strong { display:block; margin-top:10px; font-size:clamp(1.5rem, 4vw, 2.25rem); letter-spacing:-.04em; }
+      .metric small { color:#7f9ab8; }
+      .table-wrap { overflow:auto; border-radius:18px; border:1px solid rgba(148,163,184,.16); }
+      table { width:100%; border-collapse:collapse; min-width:760px; }
+      th, td { padding:13px 14px; text-align:left; border-bottom:1px solid rgba(148,163,184,.12); }
+      th { color:#bfefff; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; background:rgba(8,19,35,.9); }
+      td { color:#dbeafe; }
+      .pill { display:inline-flex; border-radius:999px; padding:4px 9px; font-weight:800; font-size:.78rem; background:rgba(103,232,249,.11); color:#a5f3fc; }
+      .green { color:var(--green); } .amber { color:var(--amber); } .red { color:var(--red); }
+      .list { display:grid; gap:10px; }
+      .item { border:1px solid rgba(148,163,184,.14); border-radius:18px; padding:14px; background:rgba(2,8,23,.36); }
+      .item strong { display:block; margin-bottom:5px; }
+      pre { white-space:pre-wrap; word-break:break-word; background:#020617; border:1px solid var(--line); border-radius:18px; padding:16px; max-height:420px; overflow:auto; }
+      .status { min-height:24px; color:var(--muted); margin-top:12px; }
+      footer { margin-top:34px; color:#7890ad; }
+      @media (max-width: 900px) { .hero { grid-template-columns:1fr; } .span-3,.span-4,.span-6,.span-8 { grid-column:span 12; } header { align-items:flex-start; flex-direction:column; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="brand"><div class="mark">✦</div><div>WealthView<br /><span class="eyebrow">Stellar native treasury</span></div></div>
+        <nav><a href="/openapi.json">OpenAPI</a> · <a href="/agent.json">Agent</a> · <a href="/demo.html">API demo</a></nav>
+      </header>
+
+      <section class="hero">
+        <div class="panel">
+          <div class="eyebrow">Live wallet aggregation</div>
+          <h1>Aggregate Stellar wallets without replacing your treasury workflow.</h1>
+          <p>Enter one or more Stellar public keys to query <code>/api/aggregate</code> in real time. WealthView preserves XLM, Stellar classic trustline, SEP-41/Soroban token, share link, snapshot download, JSON export, and Treasury Signals workflows.</p>
+        </div>
+        <form id="wallet-form" class="panel">
+          <h2>Wallets</h2>
+          <label for="wallets">Stellar wallet public keys</label>
+          <textarea id="wallets" name="wallets" placeholder="G...&#10;G..."></textarea>
+          <div class="hint">Separate multiple wallets with commas, spaces, or new lines. URL state is shareable with <code>?wallets=...</code>.</div>
+          <label for="sep41">Optional SEP-41/Soroban holdings</label>
+          <input id="sep41" name="sep41" placeholder="CODE:CONTRACT_ID:BALANCE:PRICE_USD" />
+          <div class="hint">Use only when you have token contract balances from your Soroban indexer. Values are never mocked.</div>
+          <div class="actions">
+            <button class="primary" type="submit">Refresh aggregate</button>
+            <button class="secondary" id="share" type="button">Generate Share Link</button>
+            <button class="secondary" id="snapshot" type="button">Download Treasury Snapshot</button>
+            <button class="secondary" id="export" type="button">Export JSON</button>
+            <button class="danger" id="clear" type="button">Clear</button>
+          </div>
+          <div class="status" id="status">Ready for live Stellar wallet input.</div>
+        </form>
+      </section>
+
+      <section class="grid" aria-label="Aggregation results">
+        <article class="metric span-3"><span>Priced NAV</span><strong id="nav">—</strong><small id="nav-note">Live aggregate result</small></article>
+        <article class="metric span-3"><span>XLM balance</span><strong id="xlm">—</strong><small id="xlm-note">Native Stellar support</small></article>
+        <article class="metric span-3"><span>Classic assets</span><strong id="classic-count">—</strong><small>Trustlines found</small></article>
+        <article class="metric span-3"><span>SEP-41 tokens</span><strong id="sep41-count">—</strong><small>Soroban holdings supplied</small></article>
+
+        <section class="panel span-8">
+          <h2>Aggregated Assets</h2>
+          <div class="table-wrap"><table><thead><tr><th>Type</th><th>Asset</th><th>Balance</th><th>USD value</th><th>Source</th></tr></thead><tbody id="assets"><tr><td colspan="5">Enter wallets to load live assets.</td></tr></tbody></table></div>
+        </section>
+        <section class="panel span-4">
+          <h2>Treasury Signals</h2>
+          <div class="list" id="signals"><div class="item">Signals calculate after live aggregation.</div></div>
+        </section>
+
+        <section class="panel span-12">
+          <h2>Treasury Intelligence</h2>
+          <div class="grid" id="intelligence">
+            <article class="metric span-3"><span>Treasury Health Score</span><strong id="health">—</strong><small id="health-note">From real aggregate</small></article>
+            <article class="metric span-3"><span>Idle Capital Detection</span><strong id="idle">—</strong><small id="idle-note">Spendable XLM</small></article>
+            <article class="metric span-3"><span>Snapshot Change</span><strong id="change">—</strong><small id="change-note">Compared with saved snapshot</small></article>
+            <article class="metric span-3"><span>Simulation</span><strong id="sim">—</strong><small id="sim-note">XLM ±10%</small></article>
+            <section class="span-4"><h2>Treasury Alerts</h2><div class="list" id="alerts"></div></section>
+            <section class="span-4"><h2>Rule-based Benchmarking</h2><div class="list" id="benchmarks"></div></section>
+            <section class="span-4"><h2>Executive Treasury Brief</h2><div class="item" id="brief">Run aggregation to generate a brief from current wallet data.</div></section>
+          </div>
+        </section>
+
+        <section class="panel span-12">
+          <h2>Raw aggregate JSON</h2>
+          <pre id="raw">No aggregate loaded.</pre>
+        </section>
+      </section>
+      <footer>WealthView queries live Stellar data through Vercel serverless API routes. This is informational software, not financial advice.</footer>
+    </main>
+
+    <script type="module">
+      import { createWealthViewClient } from './stellar-portfolio-sdk.js';
+      const client = createWealthViewClient();
+      const $ = (id) => document.getElementById(id);
+      const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+      const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 7 });
+      let latest = null;
+
+      function paramsFromState() {
+        const params = new URLSearchParams();
+        if ($('wallets').value.trim()) params.set('wallets', $('wallets').value.trim());
+        if ($('sep41').value.trim()) params.set('sep41', $('sep41').value.trim());
+        const saved = localStorage.getItem('wealthview:lastSnapshot');
+        if (saved) params.set('previous', btoa(saved).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''));
+        return params;
+      }
+      function restoreUrlState() {
+        const params = new URLSearchParams(location.search);
+        $('wallets').value = params.get('wallets') || params.get('wallet') || localStorage.getItem('wealthview:wallets') || '';
+        $('sep41').value = params.get('sep41') || localStorage.getItem('wealthview:sep41') || '';
+      }
+      function download(name, data) {
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = Object.assign(document.createElement('a'), { href: url, download: name });
+        a.click(); URL.revokeObjectURL(url);
+      }
+      function setStatus(message) { $('status').textContent = message; }
+      function render(data) {
+        latest = data;
+        const { aggregate, signals, intelligence } = data;
+        localStorage.setItem('wealthview:wallets', $('wallets').value.trim());
+        localStorage.setItem('wealthview:sep41', $('sep41').value.trim());
+        $('nav').textContent = money.format(aggregate.totals.valueUsd);
+        $('xlm').textContent = number.format(aggregate.totals.xlmBalance || 0);
+        $('classic-count').textContent = aggregate.totals.classicAssetCount;
+        $('sep41-count').textContent = aggregate.totals.sep41AssetCount;
+        $('assets').innerHTML = aggregate.assets.length ? aggregate.assets.map((asset) => `<tr><td><span class="pill">${asset.type}</span></td><td>${asset.code}${asset.issuer ? `<br><small>${asset.issuer}</small>` : asset.contract ? `<br><small>${asset.contract}</small>` : ''}</td><td>${number.format(asset.balance)}</td><td>${asset.valueUsd == null ? 'Unpriced' : money.format(asset.valueUsd)}</td><td>${asset.wallets.length} wallet(s)</td></tr>`).join('') : '<tr><td colspan="5">No balances returned.</td></tr>';
+        $('signals').innerHTML = signals.map((signal) => `<div class="item"><strong class="${signal.status === 'green' ? 'green' : signal.status === 'amber' ? 'amber' : 'red'}">${signal.name}</strong><span>${signal.detail}</span></div>`).join('');
+        $('health').textContent = `${intelligence.health.score}/100`;
+        $('health-note').textContent = `${intelligence.health.status}, ${intelligence.health.stableAllocationPct}% stable`;
+        $('idle').textContent = number.format(intelligence.idleCapital.spendableXlm);
+        $('idle-note').textContent = intelligence.idleCapital.estimatedUsd == null ? 'USD value unavailable' : money.format(intelligence.idleCapital.estimatedUsd);
+        $('change').textContent = intelligence.snapshotChange.available ? `${intelligence.snapshotChange.changePct}%` : '—';
+        $('change-note').textContent = intelligence.snapshotChange.available ? money.format(intelligence.snapshotChange.changeUsd) : intelligence.snapshotChange.message;
+        $('sim').textContent = intelligence.simulation.xlmDown10Usd == null ? '—' : money.format(intelligence.simulation.xlmDown10Usd);
+        $('sim-note').textContent = intelligence.simulation.xlmUp10Usd == null ? 'No XLM price' : `Down/up: ${money.format(intelligence.simulation.xlmDown10Usd)} / ${money.format(intelligence.simulation.xlmUp10Usd)}`;
+        $('alerts').innerHTML = intelligence.alerts.map((alert) => `<div class="item"><strong class="${alert.level === 'critical' ? 'red' : alert.level === 'warning' ? 'amber' : 'green'}">${alert.title}</strong><span>${alert.detail}</span></div>`).join('');
+        $('benchmarks').innerHTML = intelligence.benchmarks.map((rule) => `<div class="item"><strong class="${rule.passed ? 'green' : 'amber'}">${rule.rule}</strong><span>${rule.value}</span></div>`).join('');
+        $('brief').textContent = intelligence.executiveBrief;
+        $('raw').textContent = JSON.stringify(data, null, 2);
+      }
+      async function load(event) {
+        event?.preventDefault();
+        setStatus('Querying live /api/aggregate…');
+        try {
+          const params = paramsFromState();
+          const url = `${location.pathname}?${new URLSearchParams([...params].filter(([key]) => key !== 'previous')).toString()}`;
+          history.replaceState(null, '', url);
+          render(await client.aggregate(params));
+          setStatus('Live aggregate loaded.');
+        } catch (error) {
+          setStatus(`Unable to load aggregate: ${error.message}`);
+        }
+      }
+      $('wallet-form').addEventListener('submit', load);
+      $('share').addEventListener('click', async () => { await navigator.clipboard.writeText(location.href); setStatus('Share link copied to clipboard.'); });
+      $('snapshot').addEventListener('click', () => { if (!latest) return setStatus('Run aggregation first.'); localStorage.setItem('wealthview:lastSnapshot', JSON.stringify(latest.aggregate)); download(`wealthview-snapshot-${new Date().toISOString()}.json`, JSON.stringify(latest.aggregate, null, 2)); setStatus('Snapshot downloaded and saved for change detection.'); });
+      $('export').addEventListener('click', () => latest ? download(`wealthview-export-${new Date().toISOString()}.json`, JSON.stringify(latest, null, 2)) : setStatus('Run aggregation first.'));
+      $('clear').addEventListener('click', () => { localStorage.removeItem('wealthview:wallets'); localStorage.removeItem('wealthview:sep41'); $('wallets').value = ''; $('sep41').value = ''; history.replaceState(null, '', location.pathname); setStatus('Cleared local WealthView wallet state.'); });
+      restoreUrlState();
+      if ($('wallets').value.trim() || $('sep41').value.trim()) load();
+    </script>
+  </body>
+</html>

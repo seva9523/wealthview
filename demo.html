@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WealthView API Demo</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <style>
+      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      body { margin: 0; background: #030712; color: #edf7ff; }
+      main { max-width: 900px; margin: 0 auto; padding: 48px 22px; }
+      a { color: #67e8f9; }
+      textarea { width: 100%; min-height: 100px; border-radius: 16px; border: 1px solid #1e3a5f; background: #020617; color: #edf7ff; padding: 14px; }
+      pre { overflow: auto; background: #020617; border: 1px solid #1e3a5f; border-radius: 18px; padding: 20px; line-height: 1.55; }
+      button { border: 0; border-radius: 999px; background: #67e8f9; color: #07111f; padding: 12px 18px; font-weight: 800; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a href="/">← Back to dashboard</a>
+      <h1>WealthView live aggregate API demo</h1>
+      <p>This page calls <code>/api/aggregate</code> through <code>stellar-portfolio-sdk.js</code>. No demo balances are hardcoded.</p>
+      <textarea id="wallets" placeholder="Paste one or more Stellar G... public keys"></textarea><br /><br />
+      <button id="refresh">Refresh aggregate data</button>
+      <pre id="output">Enter a wallet and refresh.</pre>
+    </main>
+    <script type="module">
+      import { createWealthViewClient } from './stellar-portfolio-sdk.js';
+      const output = document.querySelector('#output');
+      const wallets = document.querySelector('#wallets');
+      const client = createWealthViewClient();
+      async function load() {
+        output.textContent = 'Loading…';
+        try {
+          output.textContent = JSON.stringify(await client.aggregate({ wallets: wallets.value }), null, 2);
+        } catch (error) {
+          output.textContent = error.message;
+        }
+      }
+      document.querySelector('#refresh').addEventListener('click', load);
+    </script>
+  </body>
+</html>

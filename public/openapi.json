@@ -1,0 +1,24 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WealthView API",
+    "version": "1.0.0",
+    "description": "Live Stellar wallet aggregation, Treasury Signals, and additive Treasury Intelligence endpoints. Outputs are calculated from wallet query results, not demo treasury values."
+  },
+  "paths": {
+    "/api/aggregate": {
+      "get": {
+        "summary": "Aggregate one or more Stellar wallets",
+        "parameters": [
+          { "name": "wallets", "in": "query", "schema": { "type": "string" }, "description": "Comma, space, or newline separated Stellar G... account IDs." },
+          { "name": "sep41", "in": "query", "schema": { "type": "string" }, "description": "Optional SEP-41 holdings as CODE:CONTRACT_ID:BALANCE:PRICE_USD." }
+        ],
+        "responses": { "200": { "description": "Aggregate, Treasury Signals, and Treasury Intelligence response" } }
+      }
+    },
+    "/api/signals": { "get": { "summary": "Get Treasury Signals for wallet aggregate", "responses": { "200": { "description": "Signals response" } } } },
+    "/api/intelligence": { "get": { "summary": "Get Treasury Intelligence for wallet aggregate", "responses": { "200": { "description": "Intelligence response" } } } },
+    "/api/snapshot": { "get": { "summary": "Get live aggregate snapshot", "responses": { "200": { "description": "Snapshot response" } } } },
+    "/api/history": { "get": { "summary": "Reserved for externally persisted snapshot history", "responses": { "200": { "description": "History response" } } } }
+  }
+}
